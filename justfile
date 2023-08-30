@@ -14,7 +14,7 @@ install:
 
 # Update dependencies and update pre-commit hooks
 update:
-  pdm sync
+  pdm lock
   pdm update
   pdm run pre-commit install-hooks
   pdm run pre-commit autoupdate
