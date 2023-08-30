@@ -9,15 +9,16 @@ readme = "README.md"
 dynamic = ["version"]
 requires-python = ">=3.10"
 dependencies = [
-    "scikit-learn>=1.3.0",
     "polars[pandas]>=0.18.13",
+    "scikit-learn>=1.3.0",
+    "holidays>=0.31",
 ]
 
 [project.optional-dependencies]
 eda = [
     "seaborn>=0.12.2",
-    "solara>=1.19.0",
     "jupyterlab>=4.0.5",
+    "statsmodels>=0.14.0",
 ]
 [tool.pdm.dev-dependencies]
 precommit = [
@@ -25,9 +26,11 @@ precommit = [
     "black>=23.3.0",
     "blacken-docs>=1.14.0",
     "deptry>=0.12.0",
-    "mypy>=1.3.0",
     "pip-audit>=2.5.6",
     "ruff>=0.0.272",
+    "nbstripout>=0.6.1",
+    "mypy>=1.3.0",
+    "pandas-stubs>=2.0.3.230814",
 ]
 docs = [
     "mkdocs>=1.4.2",
@@ -57,6 +60,7 @@ source-includes = ["tests", "CHANGELOG.md", "README.md"]
 src = ["src"]
 target-version = "py310"
 line-length = 88
+fix = true
 
 select = [
   # default
@@ -65,7 +69,7 @@ select = [
   # extra
   "A",      # builtin shadowing
   "B",      # flake8 bugbear
-  "BLE",    # aboid bare excepts
+  "BLE",    # avoid bare excepts
   "C4",     # simplify comprehensions
   "D",      # pydocstyle
   "DTZ",    # datetime errors
@@ -80,14 +84,19 @@ select = [
   "W",      # pycodestyle warning
   "YTT",    # wrong usage of sys.info
 ]
-fix = true
-ignore = ["D107", "E501", "TRY003"]
+ignore = [
+  "N803",
+  "N806",
+  "D107",
+  "E501",
+  "TRY003",
+]
 
   [tool.ruff.per-file-ignores]
   "__init__.py" = ["F401", "I002"]
 
   [tool.ruff.pydocstyle]
-  convention = "google"
+  convention = "numpy"
 
   [tool.ruff.pycodestyle]
   max-doc-length = 88
@@ -112,8 +121,9 @@ check_consistency = true
   docs = "📚 Docs"
 
 [tool.mypy]
-python_version = "3.9"
+plugins = "numpy.typing.mypy_plugin"
 python_executable = ".venv/bin/python"
+python_version = "3.10"
 show_error_codes = true
 
 check_untyped_defs = true
@@ -122,6 +132,22 @@ disallow_untyped_defs = true
 no_implicit_optional = true
 warn_return_any = true
 warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+module = "sklearn.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "matplotlib.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "seaborn.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "statsmodels.*"
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 testpaths = "tests"
