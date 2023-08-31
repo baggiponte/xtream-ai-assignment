@@ -12,6 +12,10 @@ install:
   pdm install --dev
   pdm run pre-commit install --install-hooks
 
+# Run the training pipeline
+@train:
+  pdm run pythonm scripts/train.py
+
 # Update dependencies and update pre-commit hooks
 update:
   pdm lock
@@ -53,7 +57,3 @@ needs *commands:
       exit 1
     fi
   done
-
-# Export the python kernel to run code inside Jupyter
-export-kernel destination="$HOME/.local":
-  pdm run python -m ipykernel install --name=xtream-ai-assignment --display-name="xtream AI assignment" --prefix={{destination}}
