@@ -84,9 +84,6 @@ You can click on the badge below to open the notebook in Colab and run all cells
 
 If you would like to run the notebook locally, you can use do one of the following:
 
-
-3. Run the following:
-
 ```bash
 # with just
 just lab
@@ -96,3 +93,33 @@ pdm run jupyter-lab
 ```
 
 This command will launch a JupyterLab session. Open the notebook [`./notebooks/challenge_2-forecast.ipynb`](./notebooks/challenge_2-forecast.ipynb) and run all cells.
+
+### Challenge 4
+
+The training script is located under [`./scripts/train.py`](./scripts/train.py) and can be run as follows:
+
+```bash
+# with just
+just train
+
+# without just
+pdm run python scripts/train.py
+```
+
+The script accepts the following parameters:
+
+```
+usage: train.py [-h] [--training-window TRAINING_WINDOW] [--forecasting-horizon FORECASTING_HORIZON]
+                [--validation-strategy VALIDATION_STRATEGY]
+
+Powerload forecasting pipeline
+
+options:
+  -h, --help            show this help message and exit
+  --training-window TRAINING_WINDOW
+                        Cross-validation training window, in days (default: 365*10)
+  --forecasting-horizon FORECASTING_HORIZON
+                        Cross-validation forecasting horizon, in days (default: 365)
+  --validation-strategy VALIDATION_STRATEGY
+                        Cross-validation strategy: 'rolling' or 'expanding' (default: 'rolling')
+```
