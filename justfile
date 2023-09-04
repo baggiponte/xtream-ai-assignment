@@ -5,20 +5,26 @@ set positional-arguments
 help:
   @just --list
 
+# Lock dependencies
+lock:
+  @{{just_executable()}} needs pdm
+
+  pdm lock --dev --group=:all
+
 # Create a git repo if not exists, install dependencies and pre-commit hooks
 install:
   @{{just_executable()}} needs pdm
 
-  pdm install --dev
+  pdm install --dev --group=:all
   pdm run pre-commit install --install-hooks
+  pdm run nbstripout --install
 
 # Run the training pipeline
 @train:
   pdm run pythonm scripts/train.py
 
 # Update dependencies and update pre-commit hooks
-update:
-  pdm lock
+update: lock
   pdm update
   pdm run pre-commit install-hooks
   pdm run pre-commit autoupdate
